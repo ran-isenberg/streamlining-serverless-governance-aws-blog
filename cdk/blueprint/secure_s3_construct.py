@@ -17,7 +17,6 @@ class SecureS3Construct(Construct):
             self,
             constants.BUCKET_NAME,
             versioned=True,
-            bucket_name=f'{self.id_}{constants.BUCKET_NAME}',
             encryption=s3.BucketEncryption.S3_MANAGED,
             block_public_access=s3.BlockPublicAccess.BLOCK_ALL,
             removal_policy=RemovalPolicy.DESTROY if not is_production_env else RemovalPolicy.RETAIN,
