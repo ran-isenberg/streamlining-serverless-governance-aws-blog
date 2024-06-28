@@ -9,7 +9,6 @@ from aws_lambda_powertools.utilities.batch import (
     process_partial_response,
 )
 from aws_lambda_powertools.utilities.typing import LambdaContext
-from botocore.config import Config
 
 from service.handlers.models.env_vars import MyHandlerEnvVars
 from service.handlers.models.sqs_item import OrderSqsRecord
@@ -17,11 +16,8 @@ from service.handlers.utils.observability import logger, metrics, tracer
 
 processor = BatchProcessor(event_type=EventType.SQS, model=OrderSqsRecord)
 
-# Create a configuration object with SSL enabled
-config = Config(ssl=True)
-
 # Initialize the S3 client with the SSL configuration
-s3_client = boto3.client('s3', config=config)
+s3_client = boto3.client('s3')
 
 
 @tracer.capture_method
