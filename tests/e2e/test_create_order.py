@@ -4,7 +4,7 @@ from http import HTTPStatus
 import pytest
 import requests
 
-from cdk.service.constants import APIGATEWAY, GW_RESOURCE
+from cdk.blueprint.constants import APIGATEWAY, GW_RESOURCE
 from service.models.input import CreateOrderRequest
 from tests.utils import generate_random_string, get_stack_output
 

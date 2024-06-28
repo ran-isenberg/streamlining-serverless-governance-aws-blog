@@ -4,7 +4,7 @@ from pathlib import Path
 
 from git import Repo
 
-import cdk.service.constants as constants
+import cdk.blueprint.constants as constants
 
 
 def get_username() -> str:

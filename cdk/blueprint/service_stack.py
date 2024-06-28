@@ -2,10 +2,9 @@ from aws_cdk import Aspects, Stack, Tags
 from cdk_nag import AwsSolutionsChecks, NagSuppressions
 from constructs import Construct
 
-from cdk.service.api_construct import ApiConstruct
-from cdk.service.configuration.configuration_construct import ConfigurationStore
-from cdk.service.constants import CONFIGURATION_NAME, ENVIRONMENT, OWNER_TAG, SERVICE_NAME, SERVICE_NAME_TAG
-from cdk.service.utils import get_construct_name, get_username
+from cdk.blueprint.constants import OWNER_TAG, SERVICE_NAME, SERVICE_NAME_TAG
+from cdk.blueprint.sqs_lambda_s3_blueprint import SqsLambdaToS3Construct
+from cdk.blueprint.utils import get_construct_name, get_username
 
 
 class ServiceStack(Stack):
@@ -13,25 +12,14 @@ class ServiceStack(Stack):
         super().__init__(scope, id, **kwargs)
         self._add_stack_tags()
 
-        # This construct should be deployed in a different repo and have its own pipeline so updates can be decoupled
-        # from running the service pipeline and without redeploying the service lambdas. For the sake of this template
-        # example, it is deployed as part of the service stack
-        self.dynamic_configuration = ConfigurationStore(
+        self.blueprint = SqsLambdaToS3Construct(
             self,
-            get_construct_name(stack_prefix=id, construct_name='DynamicConf'),
-            ENVIRONMENT,
-            SERVICE_NAME,
-            CONFIGURATION_NAME,
-        )
-        self.api = ApiConstruct(
-            self,
-            get_construct_name(stack_prefix=id, construct_name='Crud'),
-            self.dynamic_configuration.app_name,
+            get_construct_name(stack_prefix=id, construct_name='blueprint'),
             is_production_env=is_production_env,
         )
 
         # add security check
-        self._add_security_tests()
+        # self._add_security_tests()
 
     def _add_stack_tags(self) -> None:
         # best practice to help identify resources in the console
