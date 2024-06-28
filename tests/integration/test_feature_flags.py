@@ -48,7 +48,7 @@ def call_create_order(body: dict[str, Any]) -> dict[str, Any]:
     # important is done here since idempotency decorator requires an env. variable during import time
     # conf.test sets that env. variable (table name) but it runs after imports
     # this way, idempotency import runs after conftest sets the values already
-    from service.handlers.handle_create_order import lambda_handler
+    from service.handlers.handle_sqs_batch import lambda_handler
 
     return lambda_handler(body, generate_context())
 
