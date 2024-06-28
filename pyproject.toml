@@ -1,16 +1,16 @@
 [tool.poetry]
-name = "aws_lambda_handler_cookbook"
-version = "3.0.0"
-description = "This repository provides a working, deployable, open source based, AWS Lambda handler and CDK Python code. This handler embodies Serverless best practices and has all the bells and whistles for a proper production ready handler"
+name = "streamline_blueprints"
+version = "1.0.0"
+description = "CDK patterns blueprint"
 authors = ["Ran Isenberg"]
 classifiers=[
     "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Developers",
     "License :: OSI Approved :: MIT License",
     "Natural Language :: English",
-    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
 ]
-repository="https://github.com/ran-isenberg/aws-lambda-handler-cookbook"
+repository="https://github.com/ran-isenberg/streamlining-serverless-governance-aws-blog"
 readme = "README.md"
 keywords = ["aws lambda cookbook", "guide to aws lambda", "cdk template", "best practices", "serverless service template"]
 license = "MIT-0"
@@ -21,18 +21,16 @@ pydantic = {version = "^2.0.3"}
 email-validator = {version = "*"}
 aws-lambda-powertools =  {extras = ["tracer"],version = "^2.20.0"}
 mypy-boto3-dynamodb = "*"
-cachetools = "*"
 boto3 = "^1.26.125"
 aws-lambda-env-modeler = "*"
 
 [tool.poetry.dev-dependencies]
 # CDK
-service-cdk = {path = "cdk", develop = true}
+blueprint-cdk = {path = "cdk", develop = true}
 aws-cdk-lib = ">=2.130.0"
 constructs = ">=10.0.0"
 cdk-nag = ">2.0.0"
 "aws-cdk.aws-lambda-python-alpha" = "^2.130.0-alpha.0"
-cdk-monitoring-constructs = "*"
 # DEV
 pytest = "*"
 pytest-mock = "*"

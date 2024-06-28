@@ -48,19 +48,13 @@ build: deps
 	mkdir -p .build/lambdas ; cp -r service .build/lambdas
 	mkdir -p .build/common_layer ; poetry export --without=dev --format=requirements.txt > .build/common_layer/requirements.txt
 
-infra-tests: build
-	poetry run pytest tests/infrastructure
 
 integration:
 	poetry run pytest tests/integration  --cov-config=.coveragerc --cov=service --cov-report xml
 
-e2e:
-	poetry run pytest tests/e2e  --cov-config=.coveragerc --cov=service --cov-report xml
 
-pr: deps format pre-commit complex lint lint-docs unit deploy coverage-tests e2e openapi
+pr: deps format pre-commit complex lint deploy integration
 
-coverage-tests:
-	poetry run pytest tests/unit tests/integration  --cov-config=.coveragerc --cov=service --cov-report xml
 
 deploy: build
 	npx cdk deploy --app="${PYTHON} ${PWD}/app.py" --require-approval=never
@@ -68,11 +62,6 @@ deploy: build
 destroy:
 	npx cdk destroy --app="${PYTHON} ${PWD}/app.py" --force
 
-docs:
-	poetry run mkdocs serve
-
-lint-docs:
-	docker run -v ${PWD}:/markdown 06kellyjac/markdownlint-cli --fix "docs"
 
 watch:
 	npx cdk watch
@@ -81,17 +70,3 @@ update-deps:
 	poetry update
 	pre-commit autoupdate
 	npm i --package-lock-only
-
-openapi:
-	poetry run python generate_openapi.py
-
-compare-openapi:
-	poetry run python generate_openapi.py --out-destination '.' --out-filename 'openapi_latest.json'
-	@if cmp --silent $(CURRENT_OPENAPI) $(LATEST_OPENAPI); then \
-		rm $(LATEST_OPENAPI); \
-		echo "Swagger file is up to date"; \
-	else \
-		echo "Swagger files are not equal, did you run 'make pr' or 'make openapi'?"; \
-		rm $(LATEST_OPENAPI); \
-		exit 1; \
-	fi
