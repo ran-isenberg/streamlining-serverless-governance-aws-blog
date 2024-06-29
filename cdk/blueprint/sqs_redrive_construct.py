@@ -1,7 +1,9 @@
-from aws_cdk import Duration, RemovalPolicy, aws_events, aws_events_targets, aws_sqs
+from aws_cdk import CfnOutput, Duration, RemovalPolicy, aws_events, aws_events_targets, aws_sqs
 from aws_cdk import aws_iam as iam
 from aws_cdk import aws_lambda as _lambda
 from constructs import Construct
+
+from cdk.blueprint import constants
 
 
 class RedrivableSQS(Construct):
@@ -57,6 +59,8 @@ class RedrivableSQS(Construct):
             removal_policy=RemovalPolicy.DESTROY,
             enforce_ssl=True,
         )
+        CfnOutput(self, 'QueueUrl', value=self.sqs_queue.queue_url).override_logical_id('QueueUrl')
+
         self.dlq_lambda = self._create_redrive_function(
             identifier,
             redrive_lambda_layer,
@@ -118,7 +122,7 @@ class RedrivableSQS(Construct):
             code=_lambda.Code.from_asset('cdk/blueprint/_redrive_lambda'),
             role=role,
             environment={
-                'LOGGER_SERVICE_NAME': 'dlq_redrive'.lower(),  # used for logger service name
+                constants.POWERTOOLS_SERVICE_NAME: 'dlq_redrive'.lower(),  # used for logger service name
                 'SQS_ARN': main_queue.queue_arn,
                 'DLQ_ARN': dead_letter_queue.queue_arn,
             },
