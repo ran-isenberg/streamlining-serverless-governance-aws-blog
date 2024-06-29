@@ -21,7 +21,7 @@ pydantic = {version = "^2.0.3"}
 email-validator = {version = "*"}
 aws-lambda-powertools =  {extras = ["tracer"],version = "^2.20.0"}
 mypy-boto3-dynamodb = "*"
-boto3 = "^1.26.125"
+boto3 = "^1.34.136"
 aws-lambda-env-modeler = "*"
 
 [tool.poetry.dev-dependencies]
