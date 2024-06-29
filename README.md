@@ -8,8 +8,6 @@
 ![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/ran-isenberg/streamlining-serverless-governance-aws-blog/badge)
 ![issues](https://img.shields.io/github/issues/ran-isenberg/streamlining-serverless-governance-aws-blog)
 
-![alt text](https://github.com/ran-isenberg/streamlining-serverless-governance-aws-blog/blob/main/docs/media/banner.png?raw=true)
-
 This project provides a working, open source based, AWS Lambda handler skeleton Python code including DEPLOYMENT code with CDK and a pipeline.
 
 This project can serve as a template for new Serverless services - CDK deployment code, pipeline and handler are covered.
@@ -28,6 +26,11 @@ This repository contains an AWS CDK project that sets up a secure and cost-optim
 The architecture adheres to security best practices and governance for optimized cost.
 
 ## Architecture Overview
+
+<p align="center">
+  <img src="design.png"/>
+</p>
+
 
 1. **SQS Queue**:
    - Receives messages and triggers the Lambda function.
@@ -58,7 +61,7 @@ The architecture adheres to security best practices and governance for optimized
 
 - AWS CLI configured with appropriate permissions.
 - AWS CDK installed (`npm install -g aws-cdk`).
-- Python 3.12 installed.
+- Python 3.12 installed with poetry installed.
 
 ## Installation and Deployment
 
