@@ -19,7 +19,7 @@ class ServiceStack(Stack):
         )
 
         # add security check
-        # self._add_security_tests()
+        self._add_security_tests()
 
     def _add_stack_tags(self) -> None:
         # best practice to help identify resources in the console

@@ -17,10 +17,10 @@ class SqsLambdaToS3Construct(Construct):
         super().__init__(scope, id_)
         self.id_ = id_
         self.common_layer = self._build_common_layer()
-        self.bucket = SecureS3Construct(self, f'{self.id_}bucket', is_production_env).bucket
+        self.bucket = SecureS3Construct(self, 'destination', is_production_env).bucket
         self.redrive_queue = RedrivableSQS(
             self,
-            identifier=f'{self.id_}queue',
+            identifier='queue',
             redrive_lambda_layer=self.common_layer,
             redrive_lambda_runtime=_lambda.Runtime.PYTHON_3_12,
             minute='0',
