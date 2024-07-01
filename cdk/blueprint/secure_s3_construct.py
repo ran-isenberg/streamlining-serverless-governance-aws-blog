@@ -17,12 +17,11 @@ class SecureS3Construct(Construct):
         log_bucket = s3.Bucket(
             self,
             constants.ACCESS_LOG_BUCKET_NAME,
-            versioned=True,
+            versioned=True if is_production_env else False,
             encryption=s3.BucketEncryption.S3_MANAGED,
             block_public_access=s3.BlockPublicAccess.BLOCK_ALL,
             removal_policy=RemovalPolicy.DESTROY if not is_production_env else RemovalPolicy.RETAIN,
             enforce_ssl=True,
-            public_read_access=False,
             auto_delete_objects=True if not is_production_env else False,
         )
         CfnOutput(self, 'LogBucketName', value=log_bucket.bucket_name).override_logical_id('LogBucketName')
@@ -33,14 +32,13 @@ class SecureS3Construct(Construct):
         bucket = s3.Bucket(
             self,
             constants.BUCKET_NAME,
-            versioned=True,
+            versioned=True if is_production_env else False,
             encryption=s3.BucketEncryption.S3_MANAGED,
             block_public_access=s3.BlockPublicAccess.BLOCK_ALL,
             removal_policy=RemovalPolicy.DESTROY if not is_production_env else RemovalPolicy.RETAIN,
             enforce_ssl=True,
             auto_delete_objects=True if not is_production_env else False,
-            public_read_access=False,
-            object_lock_enabled=True,
+            object_lock_enabled=True if is_production_env else False,,
             server_access_logs_bucket=server_access_logs_bucket,
         )
 
