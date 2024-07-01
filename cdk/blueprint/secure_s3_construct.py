@@ -38,7 +38,7 @@ class SecureS3Construct(Construct):
             removal_policy=RemovalPolicy.DESTROY if not is_production_env else RemovalPolicy.RETAIN,
             enforce_ssl=True,
             auto_delete_objects=True if not is_production_env else False,
-            object_lock_enabled=True if is_production_env else False,,
+            object_lock_enabled=True if is_production_env else False,
             server_access_logs_bucket=server_access_logs_bucket,
         )
 
