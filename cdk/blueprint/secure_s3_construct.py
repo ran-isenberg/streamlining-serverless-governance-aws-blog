@@ -1,5 +1,4 @@
 from aws_cdk import CfnOutput, Duration, RemovalPolicy
-from aws_cdk import aws_iam as iam
 from aws_cdk import aws_s3 as s3
 from constructs import Construct
 
@@ -40,17 +39,6 @@ class SecureS3Construct(Construct):
             auto_delete_objects=True if not is_production_env else False,
             object_lock_enabled=True if is_production_env else False,
             server_access_logs_bucket=server_access_logs_bucket,
-        )
-
-        # Add bucket policy to enforce SSL
-        bucket.add_to_resource_policy(
-            iam.PolicyStatement(
-                effect=iam.Effect.DENY,
-                actions=['s3:*'],
-                resources=[bucket.bucket_arn, f'{bucket.bucket_arn}/*'],
-                conditions={'Bool': {'aws:SecureTransport': 'false'}},
-                principals=[iam.ArnPrincipal('*')],
-            )
         )
 
         CfnOutput(self, 'BucketName', value=bucket.bucket_name).override_logical_id('BucketName')
