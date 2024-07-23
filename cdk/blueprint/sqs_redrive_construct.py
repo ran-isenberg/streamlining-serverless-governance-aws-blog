@@ -23,8 +23,6 @@ class RedrivableSQS(Construct):
         max_retry_attempts (int): The maximum number of times to retry processing a message in the SQS before sending it to the DLQ. Default is 3. #pylint: disable=line-too-long
     """
 
-    LAMBDA_BASIC_EXECUTION_ROLE = 'AWSLambdaBasicExecutionRole'
-
     def __init__(
         self,
         scope: Construct,
@@ -105,12 +103,21 @@ class RedrivableSQS(Construct):
                         )
                     ]
                 ),
+                # similar to https://docs.aws.amazon.com/aws-managed-policy/latest/reference/AWSLambdaBasicExecutionRole.html
+                'CloudwatchLogs': iam.PolicyDocument(
+                    statements=[
+                        iam.PolicyStatement(
+                            actions=[
+                                'logs:CreateLogGroup',
+                                'logs:CreateLogStream',
+                                'logs:PutLogEvents',
+                            ],
+                            resources=['*'],
+                            effect=iam.Effect.ALLOW,
+                        )
+                    ]
+                ),
             },
-            managed_policies=[
-                iam.ManagedPolicy.from_aws_managed_policy_name(
-                    managed_policy_name=f'service-role/{RedrivableSQS.LAMBDA_BASIC_EXECUTION_ROLE}',
-                )
-            ],
         )
 
         return _lambda.Function(

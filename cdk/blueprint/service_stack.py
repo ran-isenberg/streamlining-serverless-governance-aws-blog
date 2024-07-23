@@ -1,5 +1,5 @@
 from aws_cdk import Aspects, Stack, Tags
-from cdk_nag import AwsSolutionsChecks, NagSuppressions
+from cdk_nag import AwsSolutionsChecks, NagPackSuppression, NagSuppressions
 from constructs import Construct
 
 from cdk.blueprint.constants import OWNER_TAG, SERVICE_NAME, SERVICE_NAME_TAG
@@ -26,20 +26,23 @@ class ServiceStack(Stack):
         Tags.of(self).add(SERVICE_NAME_TAG, SERVICE_NAME)
         Tags.of(self).add(OWNER_TAG, get_username())
 
+    # Define the custom suppression condition
+    def custom_suppression_condition(policy_statement):
+        if 'Action' in policy_statement and 'logs:*' in policy_statement['Action']:
+            if 'Resource' in policy_statement and '*' in policy_statement['Resource']:
+                return True
+        return False
+
     def _add_security_tests(self) -> None:
         Aspects.of(self).add(AwsSolutionsChecks(verbose=True))
         # Suppress a specific rule for this resource
         NagSuppressions.add_stack_suppressions(
-            self,
-            [
-                {'id': 'AwsSolutions-IAM4', 'reason': 'policy for cloudwatch logs.'},
-                {'id': 'AwsSolutions-IAM5', 'reason': 'policy for cloudwatch logs.'},
-                {'id': 'AwsSolutions-APIG2', 'reason': 'lambda does input validation'},
-                {'id': 'AwsSolutions-APIG1', 'reason': 'not mandatory in a sample template'},
-                {'id': 'AwsSolutions-APIG3', 'reason': 'not mandatory in a sample template'},
-                {'id': 'AwsSolutions-APIG6', 'reason': 'not mandatory in a sample template'},
-                {'id': 'AwsSolutions-APIG4', 'reason': 'authorization not mandatory in a sample template'},
-                {'id': 'AwsSolutions-COG4', 'reason': 'not using cognito'},
-                {'id': 'AwsSolutions-L1', 'reason': 'False positive'},
+            stack=self,
+            suppressions=[
+                NagPackSuppression(
+                    id='AwsSolutions-IAM5',
+                    reason='Suppressed for logs:* and xray permissions on all resources',
+                    applies_to=['Action::logs:*', 'Action::xray:*', 'Resource::*'],
+                )
             ],
         )

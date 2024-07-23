@@ -4,7 +4,6 @@ from aws_cdk import aws_lambda as _lambda
 from aws_cdk import aws_lambda_event_sources as lambda_event_sources
 from aws_cdk import aws_s3 as s3
 from aws_cdk.aws_lambda_python_alpha import PythonLayerVersion
-from aws_cdk.aws_logs import RetentionDays
 from constructs import Construct
 
 import cdk.blueprint.constants as constants
@@ -38,19 +37,30 @@ class SqsLambdaToS3Construct(Construct):
             constants.SERVICE_ROLE_ARN,
             assumed_by=iam.ServicePrincipal('lambda.amazonaws.com'),
             inline_policies={
-                'bucket': iam.PolicyDocument(
+                'Bucket': iam.PolicyDocument(
                     statements=[
                         iam.PolicyStatement(
                             actions=['s3:PutObject', 's3:PutObjectAcl'],
-                            resources=[f'{bucket.bucket_arn}/*'],
+                            resources=[bucket.bucket_arn],
+                            effect=iam.Effect.ALLOW,
+                        ),
+                    ]
+                ),
+                # similar to https://docs.aws.amazon.com/aws-managed-policy/latest/reference/AWSLambdaBasicExecutionRole.html
+                'CloudwatchLogs': iam.PolicyDocument(
+                    statements=[
+                        iam.PolicyStatement(
+                            actions=[
+                                'logs:CreateLogGroup',
+                                'logs:CreateLogStream',
+                                'logs:PutLogEvents',
+                            ],
+                            resources=['*'],
                             effect=iam.Effect.ALLOW,
                         )
                     ]
                 ),
             },
-            managed_policies=[
-                iam.ManagedPolicy.from_aws_managed_policy_name(managed_policy_name=(f'service-role/{constants.LAMBDA_BASIC_EXECUTION_ROLE}'))
-            ],
         )
 
     def _build_common_layer(self) -> PythonLayerVersion:
@@ -85,7 +95,6 @@ class SqsLambdaToS3Construct(Construct):
             memory_size=constants.API_HANDLER_LAMBDA_MEMORY_SIZE,
             layers=[self.common_layer],
             role=role,
-            log_retention=RetentionDays.ONE_DAY,
             log_format=_lambda.LogFormat.JSON.value,
             system_log_level=_lambda.SystemLogLevel.INFO.value,
         )
