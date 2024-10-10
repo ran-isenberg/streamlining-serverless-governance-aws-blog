@@ -34,8 +34,7 @@ class ServiceStack(Stack):
             suppressions=[
                 NagPackSuppression(
                     id='AwsSolutions-IAM5',
-                    reason='Suppressed for logs:* and xray permissions on all resources',
-                    applies_to=['Action::logs:*', 'Action::xray:*', 'Resource::*'],
-                )
+                    reason='Suppressed for logs:* and PutObject * for S3  and xray permissions on all resources',
+                ),
             ],
         )

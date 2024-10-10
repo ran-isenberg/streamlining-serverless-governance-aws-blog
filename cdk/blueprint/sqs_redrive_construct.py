@@ -122,8 +122,8 @@ class RedrivableSQS(Construct):
 
         return _lambda.Function(
             self,
-            f'{identifier}Func',
-            function_name=f'{identifier}Func'[-64:],
+            f'{identifier}DlqFunc',
+            function_name=f'{identifier}DlqFunc'[-64:],
             runtime=runtime,
             handler='redrive_lambda.redrive_handler',
             code=_lambda.Code.from_asset('cdk/blueprint/_redrive_lambda'),
@@ -136,6 +136,9 @@ class RedrivableSQS(Construct):
             tracing=_lambda.Tracing.ACTIVE,
             retry_attempts=0,
             layers=[layer],
+            logging_format=_lambda.LoggingFormat.JSON,
+            system_log_level_v2=_lambda.SystemLogLevel.INFO,
+            application_log_level_v2=_lambda.ApplicationLogLevel.INFO,
         )
 
     def _create_scheduler_cron(
