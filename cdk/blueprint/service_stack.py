@@ -26,13 +26,6 @@ class ServiceStack(Stack):
         Tags.of(self).add(SERVICE_NAME_TAG, SERVICE_NAME)
         Tags.of(self).add(OWNER_TAG, get_username())
 
-    # Define the custom suppression condition
-    def custom_suppression_condition(policy_statement):
-        if 'Action' in policy_statement and 'logs:*' in policy_statement['Action']:
-            if 'Resource' in policy_statement and '*' in policy_statement['Resource']:
-                return True
-        return False
-
     def _add_security_tests(self) -> None:
         Aspects.of(self).add(AwsSolutionsChecks(verbose=True))
         # Suppress a specific rule for this resource

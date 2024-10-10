@@ -95,8 +95,8 @@ class SqsLambdaToS3Construct(Construct):
             memory_size=constants.API_HANDLER_LAMBDA_MEMORY_SIZE,
             layers=[self.common_layer],
             role=role,
-            log_format=_lambda.LogFormat.JSON.value,
-            system_log_level=_lambda.SystemLogLevel.INFO.value,
+            logging_format=_lambda.LoggingFormat.JSON,
+            system_log_level_v2=_lambda.SystemLogLevel.INFO,
         )
 
         # set sqs queue as event source for the lambda functions
