@@ -16,7 +16,8 @@ class SqsLambdaToS3Construct(Construct):
         super().__init__(scope, id_)
         self.id_ = id_
         self.common_layer = self._build_common_layer()
-        self.bucket = SecureS3Construct(self, 'destination', is_production_env).bucket
+        self.SecureBucket = SecureS3Construct(self, 'destination', is_production_env)
+        self.bucket = self.SecureBucket.bucket
         self.redrive_queue = RedrivableSQS(
             self,
             identifier='queue',
@@ -41,7 +42,7 @@ class SqsLambdaToS3Construct(Construct):
                     statements=[
                         iam.PolicyStatement(
                             actions=['s3:PutObject', 's3:PutObjectAcl'],
-                            resources=[bucket.bucket_arn],
+                            resources=[bucket.bucket_arn, f'{bucket.bucket_arn}/*'],
                             effect=iam.Effect.ALLOW,
                         ),
                     ]
@@ -95,8 +96,9 @@ class SqsLambdaToS3Construct(Construct):
             memory_size=constants.API_HANDLER_LAMBDA_MEMORY_SIZE,
             layers=[self.common_layer],
             role=role,
-            log_format=_lambda.LogFormat.JSON.value,
-            system_log_level=_lambda.SystemLogLevel.INFO.value,
+            logging_format=_lambda.LoggingFormat.JSON,
+            system_log_level_v2=_lambda.SystemLogLevel.INFO,
+            application_log_level_v2=_lambda.ApplicationLogLevel.INFO,
         )
 
         # set sqs queue as event source for the lambda functions
