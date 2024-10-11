@@ -1,4 +1,3 @@
-
 # Secure SQS to Lambda to S3 Blueprint (Python)
 
 [![license](https://img.shields.io/github/license/ran-isenberg/streamlining-serverless-governance-aws-blog)](https://github.com/ran-isenberg/streamlining-serverless-governance-aws-blog/blob/master/LICENSE)
@@ -13,13 +12,12 @@ This project provides a working, open source based, AWS Lambda handler skeleton 
 This project can serve as a template for new Serverless services - CDK deployment code, pipeline and handler are covered.
 
 **[Blogs website](https://www.ranthebuilder.cloud)**
-> **Contact details | ran.isenberg@ranthebuilder.cloud**
+> **Contact details | mailto:ran.isenberg@ranthebuilder.cloud**
 
 [![Twitter Follow](https://img.shields.io/twitter/follow/IsenbergRan?label=Follow&style=social)](https://twitter.com/IsenbergRan)
 [![Website](https://img.shields.io/badge/Website-www.ranthebuilder.cloud-blue)](https://www.ranthebuilder.cloud/)
 
 ## Getting Started
-
 
 This repository contains an AWS CDK project that sets up a secure and cost-optimized architecture consisting of an SQS queue, a Lambda function, and an S3 bucket, along with a Dead Letter Queue (DLQ) and redrive policies.
 
@@ -50,6 +48,9 @@ The architecture adheres to security best practices and governance for optimized
 4. **Dead Letter Queue (DLQ)**:
    - Captures failed messages from the SQS queue for further inspection and redrive once per day with an EventBridge rule and a Lambda function.
 
+5. **Observability**:
+   - Two CloudWatch Dashboards (High level/ low level) with widgets covering SQS queues, Lambda functions and an S3 bucket.
+
 ## Security Best Practices Implemented
 
 - **Encryption**: All data at rest and in transit is encrypted using AWS-managed or customer-managed keys.
@@ -66,6 +67,7 @@ The architecture adheres to security best practices and governance for optimized
 ## Installation and Deployment
 
 1. **Clone the repository**:
+
    ```bash
    git clone https://github.com/ran-isenberg/streamlining-serverless-governance-aws-blog.git
    cd streamlining-serverless-governance-aws-blog
@@ -74,15 +76,17 @@ The architecture adheres to security best practices and governance for optimized
 
 **That's it, your developer environment has been set and deployed:**
 
-
 ## Connect
-* Email: [ran.isenberg@ranthebuilder.cloud](mailto:ran.isenberg@ranthebuilder.cloud)
-* Blog Website [RanTheBuilder](https://www.ranthebuilder.cloud)
-* LinkedIn: [ranisenberg](https://www.linkedin.com/in/ranisenberg/)
-* Twitter: [IsenbergRan](https://twitter.com/IsenbergRan)
+
+- Email: [ran.isenberg@ranthebuilder.cloud](mailto:ran.isenberg@ranthebuilder.cloud)
+- Blog Website [RanTheBuilder](https://www.ranthebuilder.cloud)
+- LinkedIn: [ranisenberg](https://www.linkedin.com/in/ranisenberg/)
+- Twitter: [IsenbergRan](https://twitter.com/IsenbergRan)
 
 ## Credits
+
 * [AWS Lambda Powertools (Python)](https://github.com/aws-powertools/powertools-lambda-python)
 
 ## License
+
 This library is licensed under the MIT License. See the [LICENSE](https://github.com/ran-isenberg/streamlining-serverless-governance-aws-blog/blob/main/LICENSE) file.
