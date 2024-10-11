@@ -3,6 +3,7 @@ from cdk_nag import AwsSolutionsChecks, NagPackSuppression, NagSuppressions
 from constructs import Construct
 
 from cdk.blueprint.constants import OWNER_TAG, SERVICE_NAME, SERVICE_NAME_TAG
+from cdk.blueprint.monitoring import Monitoring
 from cdk.blueprint.sqs_lambda_s3_blueprint import SqsLambdaToS3Construct
 from cdk.blueprint.utils import get_construct_name, get_username
 
@@ -16,6 +17,15 @@ class ServiceStack(Stack):
             self,
             get_construct_name(stack_prefix=id, construct_name='blueprint'),
             is_production_env=is_production_env,
+        )
+
+        self.monitoring = Monitoring(
+            self,
+            get_construct_name(stack_prefix=id, construct_name='monitoring'),
+            self.blueprint.bucket,
+            self.blueprint.redrive_queue.sqs_queue,
+            self.blueprint.redrive_queue.dead_letter_queue,
+            [self.blueprint.lambda_function],
         )
 
         # add security check
@@ -35,6 +45,10 @@ class ServiceStack(Stack):
                 NagPackSuppression(
                     id='AwsSolutions-IAM5',
                     reason='Suppressed for logs:* and PutObject * for S3  and xray permissions on all resources',
+                ),
+                NagPackSuppression(
+                    id='AwsSolutions-IAM4',
+                    reason='using AWS managed policy AWSLambdaBasicExecutionRole',
                 ),
             ],
         )
