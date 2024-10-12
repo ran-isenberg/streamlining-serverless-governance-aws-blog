@@ -7,6 +7,8 @@
 ![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/ran-isenberg/streamlining-serverless-governance-aws-blog/badge)
 ![issues](https://img.shields.io/github/issues/ran-isenberg/streamlining-serverless-governance-aws-blog)
 
+This is the code repositort for the AWS.com architecture blog post ["How CyberArk is streamlining serverless governance by codifying architectural blueprints"](https://aws.amazon.com/blogs/architecture/how-cyberark-is-streamlining-serverless-governance-by-codifying-architectural-blueprints/)
+
 This project provides a working, open source based, AWS Lambda handler skeleton Python code including DEPLOYMENT code with CDK and a pipeline.
 
 This project can serve as a template for new Serverless services - CDK deployment code, pipeline and handler are covered.
