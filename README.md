@@ -1,7 +1,7 @@
 # Secure SQS to Lambda to S3 Blueprint (Python)
 
 [![license](https://img.shields.io/github/license/ran-isenberg/streamlining-serverless-governance-aws-blog)](https://github.com/ran-isenberg/streamlining-serverless-governance-aws-blog/blob/master/LICENSE)
-![PythonSupport](https://img.shields.io/static/v1?label=python&message=3.12&color=blue?style=flat-square&logo=python)
+![PythonSupport](https://img.shields.io/static/v1?label=python&message=3.13&color=blue?style=flat-square&logo=python)
 ![version](https://img.shields.io/github/v/release/ran-isenberg/streamlining-serverless-governance-aws-blog)
 ![github-star-badge](https://img.shields.io/github/stars/ran-isenberg/streamlining-serverless-governance-aws-blog.svg?style=social)
 ![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/ran-isenberg/streamlining-serverless-governance-aws-blog/badge)
@@ -64,7 +64,7 @@ The architecture adheres to security best practices and governance for optimized
 
 - AWS CLI configured with appropriate permissions.
 - AWS CDK installed (`npm install -g aws-cdk`).
-- Python 3.12 installed with poetry installed.
+- Python 3.13 installed with poetry installed.
 
 ## Installation and Deployment
 
