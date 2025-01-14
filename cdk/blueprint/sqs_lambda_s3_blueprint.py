@@ -22,7 +22,7 @@ class SqsLambdaToS3Construct(Construct):
             self,
             identifier='queue',
             redrive_lambda_layer=self.common_layer,
-            redrive_lambda_runtime=_lambda.Runtime.PYTHON_3_12,
+            redrive_lambda_runtime=_lambda.Runtime.PYTHON_3_13,
             minute='0',
             hour='0',
             month='*',
@@ -69,7 +69,7 @@ class SqsLambdaToS3Construct(Construct):
             self,
             f'{self.id_}{constants.LAMBDA_LAYER_NAME}',
             entry=constants.COMMON_LAYER_BUILD_FOLDER,
-            compatible_runtimes=[_lambda.Runtime.PYTHON_3_12],
+            compatible_runtimes=[_lambda.Runtime.PYTHON_3_13],
             removal_policy=RemovalPolicy.DESTROY,
         )
 
@@ -82,7 +82,7 @@ class SqsLambdaToS3Construct(Construct):
         lambda_function = _lambda.Function(
             self,
             constants.CREATE_LAMBDA,
-            runtime=_lambda.Runtime.PYTHON_3_12,
+            runtime=_lambda.Runtime.PYTHON_3_13,
             code=_lambda.Code.from_asset(constants.BUILD_FOLDER),
             handler='service.handlers.handle_sqs_batch.lambda_handler',
             environment={
